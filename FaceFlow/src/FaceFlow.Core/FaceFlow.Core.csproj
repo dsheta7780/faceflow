@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <!-- Build with:  dotnet build -p:FaceFlowGpu=true   for NVIDIA CUDA support.
+       NEVER reference both ONNX Runtime packages at once. -->
+  <ItemGroup Condition="'$(FaceFlowGpu)' == 'true'">
+    <PackageReference Include="Microsoft.ML.OnnxRuntime.Gpu" Version="1.19.2" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(FaceFlowGpu)' != 'true'">
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.19.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
+  </ItemGroup>
+
+  <!-- WPF projects get a different implicit-using set from normal .NET projects:
+       System.IO is EXCLUDED (because System.IO.Path collides with System.Windows.Shapes.Path)
+       and System.Windows.Shapes is INCLUDED. FaceFlow needs System.IO everywhere and uses no
+       Shapes types in C#, so we swap them. XAML is unaffected - it resolves types itself. -->
+  <ItemGroup>
+    <Using Include="System.IO" />
+    <Using Remove="System.Windows.Shapes" />
+  </ItemGroup>
+
+</Project>

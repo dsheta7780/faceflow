@@ -1,0 +1,118 @@
+<Window x:Class="FaceFlow.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FaceFlow" Height="880" Width="1440"
+        MinHeight="640" MinWidth="1080"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource B.Bg}"
+        TextOptions.TextFormattingMode="Ideal"
+        UseLayoutRounding="True">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="248"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ============================ sidebar ============================ -->
+        <Border Grid.Column="0" Grid.Row="0" Background="{StaticResource B.Surface}"
+                BorderBrush="{StaticResource B.Border}" BorderThickness="0,0,1,0">
+            <DockPanel>
+                <!-- brand -->
+                <StackPanel DockPanel.Dock="Top" Margin="22,26,22,22">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="30" Height="30" CornerRadius="9"
+                                Background="{StaticResource B.AccentGrad}">
+                            <TextBlock Text="F" Foreground="White" FontSize="16" FontWeight="Bold"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="FaceFlow" Margin="11,0,0,0" VerticalAlignment="Center"
+                                   FontFamily="{StaticResource F.Ui}" FontSize="19" FontWeight="SemiBold"
+                                   Foreground="{StaticResource B.Text}"/>
+                    </StackPanel>
+                    <TextBlock Text="AI PHOTO ORGANISER" Margin="41,3,0,0"
+                               Style="{StaticResource T.Label}" FontSize="9.5"/>
+                </StackPanel>
+
+                <!-- originals guarantee -->
+                <Border DockPanel.Dock="Bottom" Margin="14,10,14,16" CornerRadius="10"
+                        Background="#0F2419" BorderBrush="#1E4A33" BorderThickness="1" Padding="13,11">
+                    <StackPanel>
+                        <TextBlock Text="ORIGINALS PROTECTED" Style="{StaticResource T.Label}"
+                                   Foreground="{StaticResource B.Good}"/>
+                        <TextBlock Style="{StaticResource T.Body}" FontSize="11.5" Margin="0,4,0,0"
+                                   Foreground="#7FA893"
+                                   Text="Source photos are opened read-only. Folders are made by copying."/>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel DockPanel.Dock="Top">
+                    <TextBlock Text="LIBRARY" Style="{StaticResource T.Label}" Margin="24,8,0,8"/>
+
+                    <RadioButton Style="{StaticResource Btn.Nav}" GroupName="nav" IsChecked="True"
+                                 Command="{Binding GoDashboard}" Content="◈    Dashboard"/>
+                    <RadioButton Style="{StaticResource Btn.Nav}" GroupName="nav"
+                                 Command="{Binding GoPeople}" Content="◍    People"/>
+
+                    <Grid>
+                        <RadioButton Style="{StaticResource Btn.Nav}" GroupName="nav"
+                                     Command="{Binding GoReview}" Content="◐    Needs Review"/>
+                        <Border CornerRadius="9" Padding="8,2" Margin="0,0,22,0" IsHitTestVisible="False"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Background="{StaticResource B.Accent}"
+                                Visibility="{Binding ReviewCount, Converter={StaticResource Cv.Count}}">
+                            <TextBlock Text="{Binding ReviewCount}" FontSize="10.5" FontWeight="Bold"
+                                       Foreground="White"/>
+                        </Border>
+                    </Grid>
+
+                    <RadioButton Style="{StaticResource Btn.Nav}" GroupName="nav"
+                                 Command="{Binding GoNoFaces}" Content="○    No Faces"/>
+                    <RadioButton Style="{StaticResource Btn.Nav}" GroupName="nav"
+                                 Command="{Binding GoPhotos}" Content="▤    All Photos"/>
+
+                    <TextBlock Text="SYSTEM" Style="{StaticResource T.Label}" Margin="24,20,0,8"/>
+                    <RadioButton Style="{StaticResource Btn.Nav}" GroupName="nav"
+                                 Command="{Binding GoSettings}" Content="⚙    Settings"/>
+                </StackPanel>
+
+                <Grid/>
+            </DockPanel>
+        </Border>
+
+        <!-- ============================ content ============================ -->
+        <ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding Current}" Margin="0"/>
+
+        <!-- =========================== status bar ========================== -->
+        <Border Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                Background="{StaticResource B.Surface}"
+                BorderBrush="{StaticResource B.Border}" BorderThickness="0,1,0,0"
+                Padding="20,9">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding Status}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" Style="{StaticResource T.Body}" FontSize="12"/>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="16,0"
+                            Visibility="{Binding ShowProgress, Converter={StaticResource Cv.Bool}}">
+                    <ProgressBar Style="{StaticResource Bar}" Width="220" Height="6"
+                                 VerticalAlignment="Center" Value="{Binding ProgressPercent}" Maximum="100"/>
+                    <TextBlock Text="{Binding ProgressText}" Margin="12,0,0,0" VerticalAlignment="Center"
+                               Style="{StaticResource T.Body}" FontSize="11.5"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" Text="{Binding Hardware}" VerticalAlignment="Center"
+                           Style="{StaticResource T.Body}" FontSize="11" Foreground="{StaticResource B.TextFaint}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

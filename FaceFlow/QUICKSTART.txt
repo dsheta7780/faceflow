@@ -1,0 +1,61 @@
+FACEFLOW - QUICK START
+======================
+
+You need the .NET 8 SDK once, to compile:
+    https://dotnet.microsoft.com/download/dotnet/8.0   ->  ".NET 8.0 SDK"  x64
+
+Then, in this folder, double-click in order:
+
+    1.  get-models.bat     downloads the AI models  (~300 MB, one time)
+    2.  build.bat          compiles FaceFlow
+    3.  run.bat            starts it
+
+If your PC has an NVIDIA GPU, use build-gpu.bat instead of build.bat.
+If CUDA turns out to be missing, FaceFlow falls back to the CPU by itself.
+
+For a standalone folder you can copy to another PC:
+    publish.bat   ->  dist\FaceFlow.exe
+
+
+INSIDE THE APP
+--------------
+Dashboard  ->  Add folder  ->  pick your photo folder  ->  Start scan
+
+The first scan is the slow one. Every scan after that only looks at photos
+that are new or have changed.
+
+People       name your clusters. Naming one teaches FaceFlow to recognise
+             that person in every future scan.
+Needs Review borderline matches, one at a time. Nothing here affects a
+             person's face signature until you confirm it.
+No Faces     photos with zero detected faces, with a one-click folder export.
+
+
+YOUR PHOTOS
+-----------
+FaceFlow opens your photo files read-only and never writes to them.
+"Create folder" makes a byte-for-byte copy somewhere else of your choosing.
+It will refuse to export into your photo library folder.
+
+"Reset index" and "Remove library" clear FaceFlow's own database only.
+
+
+IF SOMETHING GOES WRONG
+-----------------------
+Settings -> Open logs.  One log file per day, plain text.
+
+
+BUILD NOTE (v1.0.1)
+-------------------
+WPF projects use a different implicit-using set from ordinary .NET projects:
+System.IO is left out and System.Windows.Shapes is added, because
+System.IO.Path and System.Windows.Shapes.Path collide.
+
+Both .csproj files now swap them back:
+
+    <ItemGroup>
+      <Using Include="System.IO" />
+      <Using Remove="System.Windows.Shapes" />
+    </ItemGroup>
+
+No C# file uses a Shapes type, so nothing else is affected.

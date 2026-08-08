@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+    <!-- Nullable-reference and similar analysis warnings are informative here, never fatal.
+         A warning must not stand between you and a running application. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>NU1701;CS8618;CS8600;CS8601;CS8602;CS8603;CS8604;CS8619;CS8625;CS8629</WarningsNotAsErrors>
+    <NoWarn>$(NoWarn);CS8618;CS8600;CS8601;CS8602;CS8603;CS8604;CS8619;CS8625;CS8629;CS1591</NoWarn>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+  </PropertyGroup>
+</Project>

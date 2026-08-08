@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <Platforms>x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <AssemblyName>FaceFlow</AssemblyName>
+    <RootNamespace>FaceFlow.App</RootNamespace>
+    <Version>1.0.2</Version>
+    <Product>FaceFlow</Product>
+    <Company>FaceFlow</Company>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FaceFlow.Core\FaceFlow.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\models\**" Link="models\%(RecursiveDir)%(Filename)%(Extension)"
+          CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- WPF projects get a different implicit-using set from normal .NET projects:
+       System.IO is EXCLUDED (because System.IO.Path collides with System.Windows.Shapes.Path)
+       and System.Windows.Shapes is INCLUDED. FaceFlow needs System.IO everywhere and uses no
+       Shapes types in C#, so we swap them. XAML is unaffected - it resolves types itself. -->
+  <ItemGroup>
+    <Using Include="System.IO" />
+    <Using Remove="System.Windows.Shapes" />
+  </ItemGroup>
+
+</Project>
